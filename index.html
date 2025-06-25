@@ -50,7 +50,6 @@
     }
 
     textarea {
-      height: auto;
       min-height: 4em;
     }
 
@@ -68,7 +67,6 @@
       padding: 1em;
       border: 2px dashed #2962ff; /* ←色と太さを統一 */
       border-radius: 8px;
-      background: #fdfdfd;
     }
 
     .btn-submit {
@@ -77,7 +75,7 @@
       font-size: 1.2em;
       padding: 1em;
       border: none;
-      width: 200px;
+      max-width: 200px;
       margin: 2em auto 0;
       display: block;
       border-radius: 6px;
@@ -135,7 +133,7 @@
         </div>
         <div>
           <label>問題</label>
-          <textarea name="issue[]" rows="3" style="min-height: 4em;"></textarea>
+          <textarea name="issue[]" rows="3"></textarea>
         </div>
 
         <!-- 要望：下に配置 -->
