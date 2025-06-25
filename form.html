@@ -1,76 +1,183 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>✨まごころアンケート 2.0✨</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8">
+  <title>まごころアンケート 2.1</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      padding: 1em;
+    }
+
+    form {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 1.5em;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.5em;
+      color: #222;
+    }
+
+    h1::before, h1::after {
+      content: '✨';
+      margin: 0 0.3em;
+    }
+
+    label {
+      display: block;
+      margin-top: 1em;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.6em;
+      margin-top: 0.3em;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    .inline-group {
+      display: flex;
+      gap: 1em;
+    }
+
+    .inline-group > div {
+      flex: 1;
+    }
+
+    .fieldset {
+      margin-top: 1.5em;
+      padding: 1em;
+      border: 1px dashed #ccc;
+      border-radius: 8px;
+      background: #fdfdfd;
+    }
+
+    /* ⬇ 分類と問題を横並びにする行 */
+    .feedback-row {
+      display: flex;
+      gap: 1em;
+      align-items: start;
+    }
+
+    .feedback-row .category {
+      flex: 0 0 150px;
+    }
+
+    .feedback-row .issue {
+      flex: 1;
+    }
+
+    .btn-submit {
+      background-color: #28a745;
+      color: white;
+      font-size: 1.2em;
+      padding: 1em;
+      border: none;
+      width: 200px;
+      margin: 2em auto 0;
+      display: block;
+      border-radius: 6px;
+    }
+
+    .btn-add {
+      margin-top: 1em;
+      background-color: #2962ff;
+      color: white;
+      border: none;
+      padding: 0.7em 1em;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>✨ まごころアンケート 2.0 ✨</h1>
+  <form id="magokoroForm"
+      action="https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbyXr735-SOuiBiI3JFnuST3j81JJoMmAhoWXQM3HGYSZMdRcDQG5cSgdtbCZ7_LjUsphw/exec"
+      method="POST">
+    <h1>まごころアンケート 2.1</h1>
 
-    <form id="survey-form">
-      <!-- 🏪 店舗情報 -->
-      <div class="row">
-        <div class="field">
-          <label for="storeNumber">店番</label>
-          <select id="storeNumber" name="storeNumber"></select>
-        </div>
-        <div class="field">
-          <label for="storeName">店名</label>
-          <input type="text" id="storeName" name="storeName" readonly />
-        </div>
-        <div class="field">
-          <label for="userName">名前（匿名可）</label>
-          <input type="text" id="userName" name="userName" />
-        </div>
+    <!-- 店情報 -->
+    <div class="inline-group">
+      <div>
+        <label for="storeId">店番</label>
+        <select id="storeId" name="storeId">
+          <option value="">選択</option>
+          <option value="001">001</option>
+          <option value="002">002</option>
+        </select>
       </div>
-
-      <!-- ✏️ 項目セット -->
-      <div id="items-container"></div>
-
-      <!-- ➕ 追加ボタン（左寄せ） -->
-      <button type="button" id="addItemBtn">➕ 項目を追加</button>
-
-      <!-- 📩 送信ボタン（中央配置） -->
-      <div class="submit-container">
-        <button type="submit" id="submitBtn">送信</button>
+      <div>
+        <label for="storeName">店名</label>
+        <input type="text" id="storeName" name="storeName" readonly>
       </div>
-    </form>
-    <!-- ✅ 完了メッセージ（非表示で用意） -->
-    <div id="thankYouMessage" class="thank-you" style="display: none;">
-      <h2>📝 ご協力ありがとうございました！</h2>
-      <p>アンケートの送信が完了しました。</p>
-    </div>
-  </div>
-
-  <!-- 🧩 項目テンプレート -->
-  <template id="item-template">
-    <div class="item-block">
-      <div class="row grouped">
-        <div class="field small">
-          <label>分類</label>
-          <select name="category">
-            <option value="">選択</option>
-            <option value="接客">接客</option>
-            <option value="商品">商品</option>
-            <option value="設備">設備</option>
-            <option value="その他">その他</option>
-          </select>
-        </div>
-        <div class="field flex">
-          <label>問題</label>
-          <textarea name="problem" rows="2"></textarea>
-        </div>
-      </div>
-      <div class="field">
-        <label>要望</label>
-        <textarea name="request" rows="2"></textarea>
+      <div>
+        <label for="name">名前 <span style="font-weight: normal;">（匿名可）</span></label>
+        <input type="text" id="name" name="name" placeholder="空欄でもOK">
       </div>
     </div>
-  </template>
 
-  <script src="js/app.js" defer></script>
+    <!-- 問題・要望セット -->
+    <div id="feedback-container">
+      <div class="fieldset">
+        <!-- 分類・問題：横並び -->
+        <div class="feedback-row">
+          <div class="category">
+            <label>分類</label>
+            <select name="category[]">
+              <option value="">選択</option>
+              <option value="売場">売場</option>
+              <option value="商品">商品</option>
+              <option value="その他">その他</option>
+            </select>
+          </div>
+          <div class="issue">
+            <label>問題</label>
+            <textarea name="issue[]" rows="2"></textarea>
+          </div>
+        </div>
+
+        <!-- 要望：下に配置 -->
+        <div>
+          <label>要望</label>
+          <textarea name="request[]" rows="2"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn-add" onclick="addFeedback()">＋ 項目を追加</button>
+    <button type="submit" class="btn-submit">送信</button>
+  </form>
+
+  <script>
+    // 店番 → 店名 自動補完（仮）
+    const storeMap = {
+      '001': '本店',
+      '002': '東支店'
+    };
+
+    document.getElementById('storeId').addEventListener('change', function() {
+      document.getElementById('storeName').value = storeMap[this.value] || '';
+    });
+
+    // 項目追加処理
+    function addFeedback() {
+      const container = document.getElementById('feedback-container');
+      const template = container.querySelector('.fieldset').cloneNode(true);
+      template.querySelectorAll('textarea').forEach(t => t.value = '');
+      template.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+      container.appendChild(template);
+    }
+  </script>
 </body>
 </html>
