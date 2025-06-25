@@ -178,6 +178,28 @@
       template.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
       container.appendChild(template);
     }
+
+    // 🚀 フォーム送信処理
+    document.getElementById('survey-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+
+      fetch(form.action, {
+        method: 'POST',
+        body: new URLSearchParams([...formData])
+      })
+      .then(response => response.text())
+      .then(result => {
+        alert("送信が完了しました。ご協力ありがとうございます！");
+        form.reset();
+      })
+      .catch(error => {
+        alert("送信中にエラーが発生しました。");
+        console.error('送信エラー:', error);
+      });
+    });
   </script>
 </body>
 </html>
