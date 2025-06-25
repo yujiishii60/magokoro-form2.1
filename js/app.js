@@ -91,12 +91,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbzpa5BBC4OxNEP1fbpmTYayK6WGse0J-6BJtKgJCk4Yq3yFjWmQoJac-eUFVb_gPXTA3w/exec", {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbwEiva9OpZ1h8zEYvvPAuF60XH2M5YmgFr9lEkTJYhbDl3A0a9YnJrGPTXTbX5sMJYf/exec", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data)  // Content-Type を指定しなければ GAS 側が処理できる
       });
 
       const resultText = await response.text();
