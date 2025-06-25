@@ -107,6 +107,12 @@
       method="POST">
     <h1>まごころアンケート 2.1</h1>
 
+    <!-- HTMLにこれを追加 -->
+    <div id="thankyou" style="display:none;">
+      <h3>送信ありがとうございました！</h3>
+      <p>ご協力に感謝いたします。</p>
+    </div>
+
     <!-- 店情報 -->
     <div class="inline-group">
       <div>
@@ -192,12 +198,14 @@
       })
       .then(response => response.text())
       .then(result => {
-        alert("送信が完了しました。ご協力ありがとうございます！");
+        // フォームを非表示にして、サンクスメッセージを表示
+        document.getElementById('survey-form').style.display = 'none';
+        document.getElementById('thankyou').style.display = 'block';
         form.reset();
       })
       .catch(error => {
-        alert("送信中にエラーが発生しました。");
-        console.error('送信エラー:', error);
+        alert("送信に失敗しました。時間をおいて再度お試しください。");
+        console.error("送信エラー:", error);
       });
     });
   </script>
