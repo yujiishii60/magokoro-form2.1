@@ -107,12 +107,6 @@
       method="POST">
     <h1>まごころアンケート 2.1</h1>
 
-    <!-- HTMLにこれを追加 -->
-    <div id="thankyou" style="display:none;">
-      <h3>送信ありがとうございました！</h3>
-      <p>ご協力に感謝いたします。</p>
-    </div>
-
     <!-- 店情報 -->
     <div class="inline-group">
       <div>
@@ -164,6 +158,12 @@
     <button type="button" class="btn-add" onclick="addFeedback()">＋ 項目を追加</button>
     <button type="submit" class="btn-submit">送信</button>
   </form>
+
+    <!-- 送信後のサンクス表示領域 -->
+  <div id="thankyou" style="display:none;">
+    <h3>送信ありがとうございました！</h3>
+    <p>ご協力に感謝いたします。</p>
+  </div>
 
   <script>
     // 店番 → 店名 自動補完（仮）
