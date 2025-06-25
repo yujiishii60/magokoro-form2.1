@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycby9sHUQlo2Tbq83WKGfH6teNZBALl5qCoxg_HANgKYCVZi3cLcOolixck-iqQu_FFOP5Q/exec", {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbwtf5gFWX_idOrHsfS0_inx5LEd8YEm5ag82--gqFnWDzXhb4JZXm9j-QnrvdxvF-hC3Q/exec", {
         method: "POST",
         body: formData  // ← Content-Type自動設定されるため CORS回避
       });
