@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbypdL44AMEiv1gpOx-EbgdUlvXriw8b7mjtRu_g8tpLIOC_rjXD0LldeuQcIFtxAvf2mw/exec", {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbwHwsy0APKWhG8jarerTSOsxg0Z9XKVaun7cczKoOyL_L8kwY6kw2MZpW_rwvLZ2H6lWw/exec", {
         method: "POST",
         mode: "no-cors",  // ⭐ これが重要！
         headers: {
