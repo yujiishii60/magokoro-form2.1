@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const addItemBtn = document.getElementById("addItemBtn");
   const itemsContainer = document.getElementById("items-container");
   const form = document.getElementById("survey-form");
-  const thankYouMessage = document.getElementById("thankYouMessage"); // ✅ メッセージ要素を取得
+  const thankYouMessage = document.getElementById("thankYouMessage");
 
   const stores = [
     { number: "001", name: "本店" },
@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
     { number: "004", name: "北支店" }
   ];
 
-  // 店番セレクトの初期化
   stores.forEach(store => {
     const option = document.createElement("option");
     option.value = store.number;
@@ -21,32 +20,33 @@ document.addEventListener("DOMContentLoaded", () => {
     storeNumber.appendChild(option);
   });
 
-  // 店番選択時に店名を自動補完
   storeNumber.addEventListener("change", () => {
     const selected = stores.find(s => s.number === storeNumber.value);
     storeName.value = selected ? selected.name : "";
   });
 
-  // 項目セット追加処理
   const addItem = () => {
     const template = document.getElementById("item-template");
     const clone = template.content.cloneNode(true);
     itemsContainer.appendChild(clone);
   };
 
-  // 初期表示で3セット追加
   for (let i = 0; i < 3; i++) addItem();
-
   addItemBtn.addEventListener("click", addItem);
 
-  // ✅ フォーム送信処理
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    const userName = document.getElementById("userName").value.trim();
+    if (!userName) {
+      alert("お名前を入力してください。");
+      return;
+    }
 
     const data = {
       storeNumber: storeNumber.value,
       storeName: storeName.value,
-      userName: document.getElementById("userName").value,
+      userName,
       items: []
     };
 
@@ -56,35 +56,32 @@ document.addEventListener("DOMContentLoaded", () => {
       const problem = block.querySelector("textarea[name='problem']").value.trim();
       const request = block.querySelector("textarea[name='request']").value.trim();
 
-      // 全部空のセットは送信対象から除外
       if (category || problem || request) {
         data.items.push({ category, problem, request });
       }
     }
 
-    // 空データなら送信しない
     if (!data.items.length) {
       alert("少なくとも1つの項目を入力してください。");
       return;
     }
 
     try {
-    await fetch("https://script.google.com/macros/s/AKfycbwHwsy0APKWhG8jarerTSOsxg0Z9XKVaun7cczKoOyL_L8kwY6kw2MZpW_rwvLZ2H6lWw/exec", {
-      method: "POST",
-      mode: "no-cors",  // ⭐ CORS回避のため必要（ただし response を確認できない）
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
+      await fetch("https://script.google.com/macros/s/AKfycbwHwsy0APKWhG8jarerTSOsxg0Z9XKVaun7cczKoOyL_L8kwY6kw2MZpW_rwvLZ2H6lWw/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
 
-    // ✅ no-corsでは成功確認ができないため、送信後すぐ完了とする
-    form.style.display = "none";
-    thankYouMessage.style.display = "block";
+      if (form) form.style.display = "none";
+      if (thankYouMessage) thankYouMessage.style.display = "block";
 
-  } catch (error) {
-    console.error("送信エラー:", error);
-    alert("通信エラーが発生しました。もう一度お試しください。");
-  }
+    } catch (error) {
+      console.error("送信エラー:", error);
+      alert("通信エラーが発生しました。もう一度お試しください。");
+    }
   });
 });
