@@ -93,7 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch("https://script.google.com/macros/s/AKfycbxGh3y9NQRDxWS0Zg9OfQaueW1-Dvw2H-7imx7S2Ug66TMhjMdodZZ_gfA5OWz1_MDV9g/exec", {
         method: "POST",
-        body: formData  // ← Content-Type自動設定されるため CORS回避
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
       });
 
       const resultText = await response.text();
