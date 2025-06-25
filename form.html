@@ -2,58 +2,37 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>まごころアンケート2.0</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>✨まごころアンケート 2.0✨</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>まごころアンケート 2.0</h1>
+    <h1>✨ まごころアンケート 2.0 ✨</h1>
 
     <form id="survey-form">
-      <!-- 店番・店名 -->
-      <div class="row grouped">
-        <div class="field small">
+      <div class="row">
+        <div class="field">
           <label for="storeNumber">店番</label>
-          <select id="storeNumber" name="storeNumber">
-            <option value="">選択</option>
-          </select>
+          <select id="storeNumber" name="storeNumber"></select>
         </div>
-        <div class="field flex">
+        <div class="field">
           <label for="storeName">店名</label>
           <input type="text" id="storeName" name="storeName" readonly />
         </div>
-      </div>
-
-      <!-- お名前 -->
-      <div class="row">
         <div class="field">
-          <label for="userName">お名前</label>
-          <input type="text" id="userName" name="userName" placeholder="匿名でも構いません" />
+          <label for="userName">名前（匿名可）</label>
+          <input type="text" id="userName" name="userName" />
         </div>
       </div>
 
-      <!-- 問題・要望ブロック -->
       <div id="items-container"></div>
 
-      <!-- 追加ボタン -->
-      <div class="row">
-        <button type="button" id="addItemBtn">＋項目を追加</button>
-      </div>
-
-      <!-- 送信 -->
-      <div class="row submit-container">
-        <button type="submit">送信する</button>
-      </div>
+      <button type="button" id="addItemBtn">➕ 項目を追加</button>
+      <button type="submit" id="submitBtn">送信</button>
     </form>
-
-    <div id="thankYouMessage" style="display: none; text-align: center; padding: 2em;">
-      <h2>ありがとうございました！</h2>
-      <p>ご意見・ご要望は無事に送信されました。</p>
-    </div>
   </div>
 
-  <!-- テンプレート（JSで複製） -->
   <template id="item-template">
     <div class="item-block">
       <div class="row grouped">
@@ -61,25 +40,24 @@
           <label>分類</label>
           <select name="category">
             <option value="">選択</option>
-            <option value="商品">商品</option>
             <option value="接客">接客</option>
-            <option value="清掃">清掃</option>
+            <option value="商品">商品</option>
             <option value="設備">設備</option>
             <option value="その他">その他</option>
           </select>
         </div>
         <div class="field flex">
-          <label>問題点</label>
-          <textarea name="problem" placeholder="例：冷蔵ケースの温度が高いように感じます"></textarea>
+          <label>問題</label>
+          <textarea name="problem" rows="2"></textarea>
         </div>
-        <div class="field flex">
-          <label>ご要望</label>
-          <textarea name="request" placeholder="例：飲料の補充をもう少し頻繁にしてほしい"></textarea>
-        </div>
+      </div>
+      <div class="field">
+        <label>要望</label>
+        <textarea name="request" rows="2"></textarea>
       </div>
     </div>
   </template>
 
-  <script src="js/app.js"></script>
+  <script src="js/app.js" defer></script>
 </body>
 </html>
