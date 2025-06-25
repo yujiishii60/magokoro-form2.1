@@ -12,7 +12,7 @@
     }
 
     form {
-      max-width: 800px;
+      max-width: 480px;
       margin: 0 auto;
       background: white;
       padding: 1.5em;
@@ -63,21 +63,6 @@
       background: #fdfdfd;
     }
 
-    /* ⬇ 分類と問題を横並びにする行 */
-    .feedback-row {
-      display: flex;
-      gap: 1em;
-      align-items: start;
-    }
-
-    .feedback-row .category {
-      flex: 0 0 150px;
-    }
-
-    .feedback-row .issue {
-      flex: 1;
-    }
-
     .btn-submit {
       background-color: #28a745;
       color: white;
@@ -108,43 +93,37 @@
     <h1>まごころアンケート 2.1</h1>
 
     <!-- 店情報 -->
-    <div class="inline-group">
-      <div>
-        <label for="storeId">店番</label>
-        <select id="storeId" name="storeId">
-          <option value="">選択</option>
-          <option value="001">001</option>
-          <option value="002">002</option>
-        </select>
-      </div>
-      <div>
-        <label for="storeName">店名</label>
-        <input type="text" id="storeName" name="storeName" readonly>
-      </div>
-      <div>
-        <label for="name">名前 <span style="font-weight: normal;">（匿名可）</span></label>
-        <input type="text" id="name" name="name" placeholder="空欄でもOK">
-      </div>
+    <div>
+      <label for="storeId">店番</label>
+      <select id="storeId" name="storeId">
+        <option value="">選択</option>
+        <option value="001">001</option>
+        <option value="002">002</option>
+      </select>
+
+      <label for="storeName" style="margin-top: 1em;">店名</label>
+      <input type="text" id="storeName" name="storeName" readonly>
+
+      <label for="name" style="margin-top: 1em;">名前 <span style="font-weight: normal;">（匿名可）</span></label>
+      <input type="text" id="name" name="name" placeholder="空欄でもOK">
     </div>
 
     <!-- 問題・要望セット -->
     <div id="feedback-container">
       <div class="fieldset">
         <!-- 分類・問題：横並び -->
-        <div class="feedback-row">
-          <div class="category">
-            <label>分類</label>
-            <select name="category[]">
-              <option value="">選択</option>
-              <option value="売場">売場</option>
-              <option value="商品">商品</option>
-              <option value="その他">その他</option>
-            </select>
-          </div>
-          <div class="issue">
-            <label>問題</label>
-            <textarea name="issue[]" rows="2"></textarea>
-          </div>
+        <div>
+          <label>分類</label>
+          <select name="category[]">
+            <option value="">選択</option>
+            <option value="売場">売場</option>
+            <option value="商品">商品</option>
+            <option value="その他">その他</option>
+          </select>
+        </div>
+        <div>
+          <label>問題</label>
+          <textarea name="issue[]" rows="3" style="min-height: 4em;"></textarea>
         </div>
 
         <!-- 要望：下に配置 -->
