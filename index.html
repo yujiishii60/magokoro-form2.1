@@ -172,7 +172,7 @@
       '002': '東支店'
     };
 
-    document.getElementById('storeId').addEventListener('change', function() {
+    document.getElementById('storeId').addEventListener('change', function () {
       document.getElementById('storeName').value = storeMap[this.value] || '';
     });
 
@@ -186,7 +186,7 @@
     }
 
     // 🚀 フォーム送信処理
-    document.getElementById('survey-form').addEventListener('submit', function (e) {
+    document.getElementById('magokoroForm').addEventListener('submit', function (e) {
       e.preventDefault();
 
       const form = e.target;
@@ -196,17 +196,16 @@
         method: 'POST',
         body: new URLSearchParams([...formData])
       })
-      .then(response => response.text())
-      .then(result => {
-        // フォームを非表示にして、サンクスメッセージを表示
-        document.getElementById('survey-form').style.display = 'none';
-        document.getElementById('thankyou').style.display = 'block';
-        form.reset();
-      })
-      .catch(error => {
-        alert("送信に失敗しました。時間をおいて再度お試しください。");
-        console.error("送信エラー:", error);
-      });
+        .then(response => response.text())
+        .then(result => {
+          form.reset(); // リセットは先に
+          document.getElementById('magokoroForm').style.display = 'none';
+          document.getElementById('thankyou').style.display = 'block';
+        })
+        .catch(error => {
+          alert("送信に失敗しました。時間をおいて再度お試しください。");
+          console.error("送信エラー:", error);
+        });
     });
   </script>
 </body>
