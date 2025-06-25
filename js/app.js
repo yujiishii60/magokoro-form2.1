@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         body: formData
       });
 
-      const result = await response.json();
+      const resultText = await response.text();  // 👈 ここ変更
 
       if (result.result === "OK") {
         form.style.display = "none";
