@@ -78,20 +78,27 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const formData = new URLSearchParams();
-    formData.append("payload", JSON.stringify(data));
+    const formData = new FormData();  // ← URLSearchParams から FormData に変更
+    formData.append("storeNumber", data.storeNumber);
+    formData.append("storeName", data.storeName);
+    formData.append("userName", data.userName);
+
+    // 配列の items を1件ずつ送信（GAS側が単一処理に対応している場合）
+    for (const item of data.items) {
+      formData.append("category", item.category);
+      formData.append("problem", item.problem);
+      formData.append("request", item.request);
+    }
 
     try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbxvro22UZ4T_pYudTWaqS_HSXc7s802Gfby4MNe8mOvUBqenYHZD-53jSmFBCZCoGXjWQ/exec", {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbw-gH18e3mJLpiHG7r0b1aKyGNSSVaRvcIWBC6zjvHj-0-c9U6YaqtXUg7HxRE5--I_YQ/exec", {
         method: "POST",
-        mode: "cors",
-        body: formData
+        body: formData  // ← Content-Type自動設定されるため CORS回避
       });
 
-      const resultText = await response.text();  // ← レスポンスはテキストで受け取る
-      console.log("📨 GASレスポンス:", resultText);  // ← デバッグ用ログ
+      const resultText = await response.text();
+      console.log("📨 GASレスポンス:", resultText);
 
-      // ✅ "OK"という文字だけが返ってきた場合を判定
       if (resultText.trim().toUpperCase() === "OK") {
         form.style.display = "none";
         thankYouMessage.style.display = "block";
