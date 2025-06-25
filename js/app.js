@@ -88,13 +88,15 @@ document.addEventListener("DOMContentLoaded", () => {
         body: formData
       });
 
-      const resultText = await response.text();  // 👈 ここ変更
+      const resultText = await response.text();  // ← レスポンスはテキストで受け取る
+      console.log("📨 GASレスポンス:", resultText);  // ← デバッグ用ログ
 
-      if (result.result === "OK") {
+      // ✅ "OK"という文字だけが返ってきた場合を判定
+      if (resultText.trim().toUpperCase() === "OK") {
         form.style.display = "none";
         thankYouMessage.style.display = "block";
       } else {
-        alert("送信に失敗しました: " + result.reason);
+        alert("送信に失敗しました: " + resultText);
       }
     } catch (error) {
       console.error("送信エラー:", error);
