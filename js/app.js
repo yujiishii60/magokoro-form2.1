@@ -66,18 +66,25 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // ✅ CORS対策：formDataで送信
+    const formData = new URLSearchParams();
+    formData.append("payload", JSON.stringify(data));
+
     try {
-      await fetch("https://script.google.com/macros/s/AKfycbwGYp_BldGuwFeeKTvRBIrEjTptju1RzOUW74j_iMc4zpNnF2qG_e4r4d8VDEGYH-romQ/exec", {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbwGYp_BldGuwFeeKTvRBIrEjTptju1RzOUW74j_iMc4zpNnF2qG_e4r4d8VDEGYH-romQ/exec", {
         method: "POST",
         mode: "cors",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
+        body: formData
       });
 
-      if (form) form.style.display = "none";
-      if (thankYouMessage) thankYouMessage.style.display = "block";
+      const result = await response.json();
+
+      if (result.result === "OK") {
+        form.style.display = "none";
+        thankYouMessage.style.display = "block";
+      } else {
+        alert("送信に失敗しました: " + result.reason);
+      }
 
     } catch (error) {
       console.error("送信エラー:", error);
