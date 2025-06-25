@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("payload", JSON.stringify(data));
 
     try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbz0pOzfVvdlhxBd98OE9gxyVwJ-q-XCjqOVBl5Tm9lmQd3DdlaYxL_milSGD2Jb2EFMqg/exec", {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbxvro22UZ4T_pYudTWaqS_HSXc7s802Gfby4MNe8mOvUBqenYHZD-53jSmFBCZCoGXjWQ/exec", {
         method: "POST",
         mode: "cors",
         body: formData
