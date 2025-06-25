@@ -69,26 +69,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbwHwsy0APKWhG8jarerTSOsxg0Z9XKVaun7cczKoOyL_L8kwY6kw2MZpW_rwvLZ2H6lWw/exec", {
-        method: "POST",
-        mode: "no-cors",  // ⭐ これが重要！
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      });
+    await fetch("https://script.google.com/macros/s/AKfycbwHwsy0APKWhG8jarerTSOsxg0Z9XKVaun7cczKoOyL_L8kwY6kw2MZpW_rwvLZ2H6lWw/exec", {
+      method: "POST",
+      mode: "no-cors",  // ⭐ CORS回避のため必要（ただし response を確認できない）
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
 
+    // ✅ no-corsでは成功確認ができないため、送信後すぐ完了とする
+    form.style.display = "none";
+    thankYouMessage.style.display = "block";
 
-      if (response.ok) {
-        // ✅ フォーム非表示 & 完了メッセージ表示
-        form.style.display = "none";
-        thankYouMessage.style.display = "block";
-      } else {
-        alert("送信に失敗しました。もう一度お試しください。");
-      }
-    } catch (error) {
-      console.error("送信エラー:", error);
-      alert("通信エラーが発生しました。");
-    }
+  } catch (error) {
+    console.error("送信エラー:", error);
+    alert("通信エラーが発生しました。もう一度お試しください。");
+  }
   });
 });
