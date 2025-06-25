@@ -71,11 +71,13 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch("https://script.google.com/macros/s/AKfycbypdL44AMEiv1gpOx-EbgdUlvXriw8b7mjtRu_g8tpLIOC_rjXD0LldeuQcIFtxAvf2mw/exec", {
         method: "POST",
-        body: JSON.stringify(data),
+        mode: "no-cors",  // ⭐ これが重要！
         headers: {
           "Content-Type": "application/json"
-        }
+        },
+        body: JSON.stringify(data)
       });
+
 
       if (response.ok) {
         // ✅ フォーム非表示 & 完了メッセージ表示
