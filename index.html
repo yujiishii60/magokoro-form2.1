@@ -1,36 +1,37 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>まごころアンケート 2.1</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
       font-family: sans-serif;
       background: #f9f9f9;
-      padding: 0.5em; /* ← コンパクトに */
+      padding: 0.5em;
     }
 
     form {
       max-width: 480px;
       margin: 0 auto;
       background: white;
-      padding: 1em; /* ← 少し詰める */
+      padding: 1em;
       border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     h1 {
       text-align: center;
-      font-size: min(5vw, 1.5em); /* スマホで自動縮小 */
+      font-size: min(5vw, 1.5em);
       color: #222;
-      white-space: nowrap;       /* 折り返し禁止 */
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    h1::before, h1::after {
-      content: '✨';
+    h1::before,
+    h1::after {
+      content: "✨";
       margin: 0 0.3em;
     }
 
@@ -40,7 +41,9 @@
       font-weight: bold;
     }
 
-    input, select, textarea {
+    input,
+    select,
+    textarea {
       width: 100%;
       padding: 0.6em;
       margin-top: 0.3em;
@@ -65,8 +68,51 @@
     .fieldset {
       margin-top: 1.5em;
       padding: 1em;
-      border: 2px dashed #2962ff; /* ←色と太さを統一 */
+      border: 2px dashed #2962ff;
       border-radius: 8px;
+    }
+
+    .btn {
+      padding: 0.7em 1em;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .btn-add-remove {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5em;
+      margin-top: 1.5em;
+    }
+
+    .btn-add {
+      background-color: #2962ff;
+      color: white;
+    }
+
+    .btn-remove {
+      background-color: #9e9e9e;
+      color: white;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7em;
+      margin-top: 1.5em;
+    }
+
+    .btn-save {
+      background-color: #ff9800;
+      color: white;
+    }
+
+    .btn-reset {
+      background-color: #e91e63;
+      color: white;
     }
 
     .btn-submit {
@@ -74,28 +120,43 @@
       color: white;
       font-size: 1.2em;
       padding: 1em;
-      border: none;
-      max-width: 200px;
-      margin: 2em auto 0;
-      display: block;
-      border-radius: 6px;
+      width: 100%;
+      margin-top: 1.5em;
     }
 
-    .btn-add {
-      margin-top: 1em;
-      background-color: #2962ff;
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #323232;
       color: white;
-      border: none;
-      padding: 0.7em 1em;
-      border-radius: 5px;
-      cursor: pointer;
+      padding: 0.8em 1.5em;
+      border-radius: 6px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    @media (max-width: 480px) {
+      .button-group {
+        flex-direction: column;
+      }
+      .btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
   <form id="magokoroForm"
-      action="https://script.google.com/macros/s/AKfycbxz-_1WRl1e6JKupqVAVsqrzLp2jQhPsnrp3w0pwibkQQhpGBFcaxQRzEv35-yUvieJVA/exec"
-      method="POST">
+    action="https://script.google.com/macros/s/AKfycbxz-_1WRl1e6JKupqVAVsqrzLp2jQhPsnrp3w0pwibkQQhpGBFcaxQRzEv35-yUvieJVA/exec"
+    method="POST">
     <h1>まごころアンケート 2.1</h1>
 
     <!-- 店情報 -->
@@ -110,18 +171,18 @@
       </div>
       <div>
         <label for="storeName">店名</label>
-        <input type="text" id="storeName" name="storeName" readonly>
+        <input type="text" id="storeName" name="storeName" readonly />
       </div>
     </div>
+
     <div>
       <label for="name">名前 <span style="font-weight: normal;">（匿名可）</span></label>
-      <input type="text" id="name" name="name" placeholder="空欄でもOK">
+      <input type="text" id="name" name="name" placeholder="空欄でもOK" />
     </div>
 
     <!-- 問題・要望セット -->
     <div id="feedback-container">
       <div class="fieldset">
-        <!-- 分類・問題：横並び -->
         <div>
           <label>分類</label>
           <select name="category[]">
@@ -135,8 +196,6 @@
           <label>問題</label>
           <textarea name="issue[]" rows="3"></textarea>
         </div>
-
-        <!-- 要望：下に配置 -->
         <div>
           <label>要望</label>
           <textarea name="request[]" rows="3"></textarea>
@@ -144,28 +203,34 @@
       </div>
     </div>
 
-    <button type="button" class="btn-add" onclick="addFeedback()">＋ 項目を追加</button>
-    <button type="submit" class="btn-submit">送信</button>
+    <!-- 項目の追加・削除 -->
+    <div class="btn-add-remove">
+      <button type="button" class="btn btn-add" onclick="addFeedback()">＋ 項目を追加</button>
+      <button type="button" class="btn btn-remove" onclick="removeFeedback()">項目を削除</button>
+    </div>
+
+    <!-- 保存・リセット -->
+    <div class="button-group">
+      <button type="button" class="btn btn-save" onclick="saveDraft()">保存（あとで入力）</button>
+      <button type="button" class="btn btn-reset" onclick="clearForm()">リセット（入力データ削除）</button>
+    </div>
+
+    <button type="submit" class="btn btn-submit">送信</button>
   </form>
 
-    <!-- 送信後のサンクス表示領域 -->
-  <div id="thankyou" style="display:none;">
+  <div id="thankyou" style="display: none;">
     <h3>送信ありがとうございました！</h3>
     <p>ご協力に感謝いたします。</p>
   </div>
 
-  <script>
-    // 店番 → 店名 自動補完（仮）
-    const storeMap = {
-      '001': '本店',
-      '002': '東支店'
-    };
+  <div class="toast" id="toast">保存しました！</div>
 
+  <script>
+    const storeMap = { '001': '本店', '002': '東支店' };
     document.getElementById('storeId').addEventListener('change', function () {
       document.getElementById('storeName').value = storeMap[this.value] || '';
     });
 
-    // 項目追加処理
     function addFeedback() {
       const container = document.getElementById('feedback-container');
       const template = container.querySelector('.fieldset').cloneNode(true);
@@ -174,10 +239,109 @@
       container.appendChild(template);
     }
 
-    // 🚀 フォーム送信処理
-    document.getElementById('magokoroForm').addEventListener('submit', function (e) {
-      e.preventDefault();
+    function removeFeedback() {
+      const container = document.getElementById('feedback-container');
+      const fieldsets = container.querySelectorAll('.fieldset');
+      if (fieldsets.length > 1) {
+        container.removeChild(fieldsets[fieldsets.length - 1]);
+      }
+    }
 
+    function saveDraft() {
+      const draft = {
+        storeId: document.getElementById("storeId").value,
+        storeName: document.getElementById("storeName").value,
+        name: document.getElementById("name").value,
+        items: []
+      };
+
+      document.querySelectorAll("#feedback-container .fieldset").forEach(fieldset => {
+        draft.items.push({
+          category: fieldset.querySelector("select").value,
+          issue: fieldset.querySelector("textarea[name='issue[]']").value,
+          request: fieldset.querySelector("textarea[name='request[]']").value
+        });
+      });
+
+      localStorage.setItem("magokoro_survey_draft", JSON.stringify(draft));
+      showToast("保存しました！");
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    function restoreDraft() {
+      const saved = localStorage.getItem("magokoro_survey_draft");
+      if (!saved) return;
+      const data = JSON.parse(saved);
+      document.getElementById("storeId").value = data.storeId || '';
+      document.getElementById("storeName").value = data.storeName || '';
+      document.getElementById("name").value = data.name || '';
+      const container = document.getElementById("feedback-container");
+      container.innerHTML = "";
+      data.items.forEach(item => {
+        const fieldset = document.createElement("div");
+        fieldset.className = "fieldset";
+        fieldset.innerHTML = `
+          <div>
+            <label>分類</label>
+            <select name="category[]">
+              <option value="">選択</option>
+              <option value="売場">売場</option>
+              <option value="商品">商品</option>
+              <option value="その他">その他</option>
+            </select>
+          </div>
+          <div>
+            <label>問題</label>
+            <textarea name="issue[]" rows="3"></textarea>
+          </div>
+          <div>
+            <label>要望</label>
+            <textarea name="request[]" rows="3"></textarea>
+          </div>
+        `;
+        container.appendChild(fieldset);
+        fieldset.querySelector("select").value = item.category || '';
+        fieldset.querySelector("textarea[name='issue[]']").value = item.issue || '';
+        fieldset.querySelector("textarea[name='request[]']").value = item.request || '';
+      });
+    }
+
+    function clearForm() {
+      if (confirm("すべての入力と保存データを削除します。よろしいですか？")) {
+        document.getElementById("magokoroForm").reset();
+        localStorage.removeItem("magokoro_survey_draft");
+        document.getElementById("feedback-container").innerHTML = `
+          <div class="fieldset">
+            <div>
+              <label>分類</label>
+              <select name="category[]">
+                <option value="">選択</option>
+                <option value="売場">売場</option>
+                <option value="商品">商品</option>
+                <option value="その他">その他</option>
+              </select>
+            </div>
+            <div>
+              <label>問題</label>
+              <textarea name="issue[]" rows="3"></textarea>
+            </div>
+            <div>
+              <label>要望</label>
+              <textarea name="request[]" rows="3"></textarea>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    document.getElementById("magokoroForm").addEventListener("submit", function (e) {
+      e.preventDefault();
       const form = e.target;
       const formData = new FormData(form);
 
@@ -187,15 +351,18 @@
       })
         .then(response => response.text())
         .then(result => {
-          form.reset(); // リセットは先に
-          document.getElementById('magokoroForm').style.display = 'none';
-          document.getElementById('thankyou').style.display = 'block';
+          form.reset();
+          localStorage.removeItem("magokoro_survey_draft");
+          document.getElementById("magokoroForm").style.display = "none";
+          document.getElementById("thankyou").style.display = "block";
         })
         .catch(error => {
           alert("送信に失敗しました。時間をおいて再度お試しください。");
           console.error("送信エラー:", error);
         });
     });
+
+    window.addEventListener("DOMContentLoaded", restoreDraft);
   </script>
 </body>
 </html>

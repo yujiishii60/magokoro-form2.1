@@ -131,3 +131,16 @@ button:hover {
 #submitBtn:hover {
   background-color: #218838;
 }
+
+#saveBtn {
+  background-color: #ff9800; /* オレンジ系 */
+  color: white;
+  font-size: 1em;
+  padding: 0.5em 1.5em;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#saveBtn:hover {
+  background-color: #fb8c00;
+}

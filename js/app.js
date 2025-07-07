@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("survey-form");
   const thankYouMessage = document.getElementById("thankYouMessage");
   const userNameInput = document.getElementById("userName");
+  const saveBtn = document.getElementById("saveBtn");
   const itemTemplate = document.getElementById("item-template");
 
   // === 店舗データ ===
@@ -39,12 +40,65 @@ document.addEventListener("DOMContentLoaded", () => {
     itemsContainer.appendChild(clone);
   };
 
-  // === 初期化 ===
+  // === 保存（あとで入力） ===
+  const saveDraft = () => {
+    const userName = userNameInput.value.trim();
+    const storeNo = storeNumber.value;
+    const storeNm = storeName.value;
+
+    const itemBlocks = document.querySelectorAll(".item-block");
+    const items = [];
+
+    itemBlocks.forEach(block => {
+      const category = block.querySelector("select[name='category']").value;
+      const problem = block.querySelector("textarea[name='problem']").value;
+      const request = block.querySelector("textarea[name='request']").value;
+      items.push({ category, problem, request });
+    });
+
+    const savedData = {
+      storeNumber: storeNo,
+      storeName: storeNm,
+      userName: userName,
+      items: items
+    };
+
+    localStorage.setItem("magokoro_survey_draft", JSON.stringify(savedData));
+    alert("保存しました（あとで入力を再開できます）");
+  };
+
+  // === 復元処理 ===
+  const restoreDraft = () => {
+    const saved = localStorage.getItem("magokoro_survey_draft");
+    if (!saved) return;
+
+    try {
+      const data = JSON.parse(saved);
+      storeNumber.value = data.storeNumber || "";
+      syncStoreName();
+      userNameInput.value = data.userName || "";
+
+      itemsContainer.innerHTML = "";
+      data.items.forEach(item => {
+        const clone = itemTemplate.content.cloneNode(true);
+        clone.querySelector("select[name='category']").value = item.category || "";
+        clone.querySelector("textarea[name='problem']").value = item.problem || "";
+        clone.querySelector("textarea[name='request']").value = item.request || "";
+        itemsContainer.appendChild(clone);
+      });
+    } catch (err) {
+      console.error("復元失敗:", err);
+    }
+  };
+
+  // === 初期化処理 ===
   populateStoreOptions();
+  restoreDraft();
   for (let i = 0; i < 3; i++) addItemBlock();
 
   storeNumber.addEventListener("change", syncStoreName);
   addItemBtn.addEventListener("click", addItemBlock);
+  saveBtn.addEventListener("click", saveDraft);
 
   // === フォーム送信処理 ===
   form.addEventListener("submit", async (e) => {
@@ -78,28 +132,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const formData = new FormData();  // ← URLSearchParams から FormData に変更
-    formData.append("storeNumber", data.storeNumber);
-    formData.append("storeName", data.storeName);
-    formData.append("userName", data.userName);
-
-    // 配列の items を1件ずつ送信（GAS側が単一処理に対応している場合）
-    for (const item of data.items) {
-      formData.append("category", item.category);
-      formData.append("problem", item.problem);
-      formData.append("request", item.request);
-    }
-
     try {
       const response = await fetch("https://script.google.com/macros/s/AKfycbx28-xme9cpLpuqowaQ0NlaA6hrBlypaLqbCUaHqHQdtVQEnzOjUkF5l-92lRfRwj2fXw/exec", {
         method: "POST",
-        body: JSON.stringify(data)  // Content-Type を指定しなければ GAS 側が処理できる
+        body: JSON.stringify(data)
       });
 
       const resultText = await response.text();
       console.log("📨 GASレスポンス:", resultText);
 
       if (resultText.trim().toUpperCase() === "OK") {
+        localStorage.removeItem("magokoro_survey_draft"); // 成功したら保存データ削除
         form.style.display = "none";
         thankYouMessage.style.display = "block";
       } else {
@@ -111,3 +154,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+function saveForm() {
+  const form = document.getElementById("magokoroForm");
+  const formData = new FormData(form);
+  const data = {};
+
+  for (const [key, value] of formData.entries()) {
+    if (!data[key]) {
+      data[key] = value;
+    } else {
+      // 配列項目
+      if (!Array.isArray(data[key])) data[key] = [data[key]];
+      data[key].push(value);
+    }
+  }
+
+  localStorage.setItem("magokoro_saved", JSON.stringify(data));
+  alert("保存しました（この端末のブラウザに一時保存）");
+}
