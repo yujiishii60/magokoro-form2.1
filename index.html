@@ -151,6 +151,20 @@
         width: 100%;
       }
     }
+    #closedMessage h2 {
+      font-size: 1.8rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @media (max-width: 480px) {
+      #closedMessage h2 {
+        font-size: 1.4rem;     /* モバイル時は小さめに */
+        text-align: center;
+        padding: 0 1rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -431,6 +445,6 @@
 
     window.addEventListener("DOMContentLoaded", restoreDraft);
   </script>
-  <script src="js/app.js?v=2025070902"></script>
+  <script src="js/app.js?v=2025070903"></script>
 </body>
 </html>
