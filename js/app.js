@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // === DOM取得 ===
-  const storeNumber = document.getElementById("storeNumber");
+  const storeId = document.getElementById("storeId");
+  // const storeNumber = document.getElementById("storeNumber");
   const storeName = document.getElementById("storeName");
   const addItemBtn = document.getElementById("addItemBtn");
   const itemsContainer = document.getElementById("items-container");
@@ -52,13 +53,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const option = document.createElement("option");
       option.value = number;
       option.textContent = number;
-      storeNumber.appendChild(option);
+      storeId.appendChild(option);
+      // storeNumber.appendChild(option);
     }
   };
 
   // === 店番→店名連動 ===
   const syncStoreName = () => {
-    const selectedNumber = storeNumber.value;
+    
+    const selectedNumber = storeId.value;
+    // const selectedNumber = storeNumber.value;
     storeName.value = storeMap[selectedNumber] || "";
   };
 
@@ -71,9 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // === 保存（あとで入力） ===
   const saveDraft = () => {
     const userName = userNameInput.value.trim();
-    const storeNo = storeNumber.value;
-    const storeNm = storeName.value;
-
+    const storeNo = storeId.value;
+    const storeNm = storeName.value;  
+    // const storeNo = storeNumber.value;
+    // const storeNm = storeName.value;
     const itemBlocks = document.querySelectorAll(".item-block");
     const items = [];
 
@@ -102,7 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const data = JSON.parse(saved);
-      storeNumber.value = data.storeNumber || "";
+      storeId.value = data.storeNumber || "";
+      // storeNumber.value = data.storeNumber || "";
       syncStoreName();
       userNameInput.value = data.userName || "";
 
@@ -124,7 +130,8 @@ document.addEventListener("DOMContentLoaded", () => {
   restoreDraft();
   for (let i = 0; i < 3; i++) addItemBlock();
 
-  storeNumber.addEventListener("change", syncStoreName);
+  storeId.addEventListener("change", syncStoreName);  // ← 修正
+  // storeNumber.addEventListener("change", syncStoreName);
   addItemBtn.addEventListener("click", addItemBlock);
   saveBtn.addEventListener("click", saveDraft);
 
@@ -142,7 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // localStorage に保存（入力途中保存用）
   const draft = {
-    storeId: storeNumber.value,
+    storeId: storeId.value,
+    // storeId: storeNumber.value,
     storeName: storeName.value,
     name: userName,
     items: [],
