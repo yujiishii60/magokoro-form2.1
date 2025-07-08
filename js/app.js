@@ -120,10 +120,12 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // === 初期化処理 ===
+  // === 初期化処理 ===
   populateStoreOptions();
-  for (let i = 0; i < 3; i++) addItemBlock();
   restoreDraft();
-
+  syncStoreName();  // ← ここ追加（保険）
+  for (let i = 0; i < 3; i++) addItemBlock();
+  
   storeId.addEventListener("change", syncStoreName);  // ← 修正
   // storeNumber.addEventListener("change", syncStoreName);
   addItemBtn.addEventListener("click", addItemBlock);
