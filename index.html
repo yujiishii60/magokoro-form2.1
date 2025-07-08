@@ -361,7 +361,29 @@
     }
 
     document.getElementById("magokoroForm").addEventListener("submit", function (e) {
-      e.preventDefault();
+      // 送信前に文字数チェックを追加
+      const issues = document.querySelectorAll("textarea[name='issue[]']");
+      const requests = document.querySelectorAll("textarea[name='request[]']");
+
+      for (let i = 0; i < issues.length; i++) {
+        if (issues[i].value.length > 5000) {
+          alert(`「問題」欄の入力が5000文字を超えています（${i + 1}番目）。短くしてください。`);
+          issues[i].focus();
+          e.preventDefault();
+          return;
+        }
+      }
+
+      for (let i = 0; i < requests.length; i++) {
+        if (requests[i].value.length > 5000) {
+          alert(`「要望」欄の入力が5000文字を超えています（${i + 1}番目）。短くしてください。`);
+          requests[i].focus();
+          e.preventDefault();
+          return;
+        }
+      }
+
+      // 通常送信処理
       const form = e.target;
       const formData = new FormData(form);
 
