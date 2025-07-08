@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // === アンケート締切チェック ===
+  const DEADLINE = new Date("2025-07-8T23:59:59+09:00");
+  if (new Date() > DEADLINE) {
+    document.getElementById("survey-form").style.display = "none";
+    document.getElementById("closedMessage").style.display = "block";
+    return; // 初期化処理はスキップ
+  }
+  
   // === DOM取得 ===
   const storeNumber = document.getElementById("storeNumber");
   const storeName = document.getElementById("storeName");
@@ -159,6 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("通信エラーが発生しました。もう一度お試しください。");
   }
   */
+   });  // 👈 ← submit イベントの終わり
 });
 
 function saveForm() {
