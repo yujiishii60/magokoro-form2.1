@@ -7,12 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return; // 初期化処理はスキップ
   }
   
-  // === 店舗マップ（43店対応） === ★ここに追加！！
-  const storeMap = {
-    "001": "1番店", "002": "2番店", "003": "3番店", // ...
-    "043": "43番店"
-  };
-
   // === DOM取得 ===
   const storeId = document.getElementById("storeId");
   // const storeNumber = document.getElementById("storeNumber");
