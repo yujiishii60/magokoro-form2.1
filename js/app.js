@@ -101,57 +101,64 @@ document.addEventListener("DOMContentLoaded", () => {
   saveBtn.addEventListener("click", saveDraft);
 
   // === フォーム送信処理 ===
-  // form.addEventListener("submit", async (e) => {
-  // e.preventDefault();
+  form.addEventListener("submit", async (e) => {
+  // e.preventDefault(); ← 🚫 フォームの送信を止めない（コメントアウト or 削除）
 
-  // const userName = userNameInput.value.trim();
-  // if (!userName) {
-  //   alert("お名前を入力してください。");
-  //   return;
-  // }
+  // 以下はローカル保存のみに使う（通信はしない）
+  const userName = userNameInput.value.trim();
+  if (!userName) {
+    alert("お名前を入力してください。");
+    e.preventDefault(); // 🚨このバリデーションだけは送信を止める
+    return;
+  }
 
-  // const itemBlocks = document.querySelectorAll(".item-block");
+  // localStorage に保存（入力途中保存用）
+  const draft = {
+    storeId: storeNumber.value,
+    storeName: storeName.value,
+    name: userName,
+    items: [],
+  };
 
-  // const formData = new URLSearchParams();
-  // formData.append("storeId", storeNumber.value);
-  // formData.append("storeName", storeName.value);
-  // formData.append("name", userName);
+  const itemBlocks = document.querySelectorAll(".item-block");
+  itemBlocks.forEach(block => {
+    const category = block.querySelector("select[name='category']").value.trim();
+    const issue = block.querySelector("textarea[name='issue']").value.trim();
+    const request = block.querySelector("textarea[name='request']").value.trim();
+    draft.items.push({ category, issue, request });
+  });
 
-  // itemBlocks.forEach(block => {
-  //   const category = block.querySelector("select[name='category']").value.trim();
-  //   const issue = block.querySelector("textarea[name='issue']").value.trim();
-  //   const request = block.querySelector("textarea[name='request']").value.trim();
-  //   formData.append("category[]", category);
-  //   formData.append("issue[]", issue);
-  //   formData.append("request[]", request);
-  // });
+  localStorage.setItem("magokoro_survey_draft", JSON.stringify(draft));
 
-  // try {
-  //   const response = await fetch(
-  //     "https://script.google.com/macros/s/AKfycbxZJtYUQKbTXP9TkFoR_MVC6KzlhmyEzINVeu6lvSkXuqxhrV-C9bZjLCgbIHaYn8w-pg/exec",
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/x-www-form-urlencoded"
-  //       },
-  //       body: formData.toString()
-  //     }
-  //   );
+  // ✅ 送信後の画面切り替えはGAS側で処理してもらうためここでは何もしない
 
-  //   const resultText = await response.text();
-  //   console.log("📨 GASレスポンス:", resultText);
+  // ↓↓↓ fetch送信処理は完全にコメントアウト ↓↓↓
 
-  //   if (resultText.trim().toUpperCase() === "OK") {
-  //     localStorage.removeItem("magokoro_survey_draft");
-  //     form.style.display = "none";
-  //     thankYouMessage.style.display = "block";
-  //   } else {
-  //     alert("送信に失敗しました: " + resultText);
-  //   }
-  // } catch (error) {
-  //   console.error("送信エラー:", error);
-  //   alert("通信エラーが発生しました。もう一度お試しください。");
-  // }
+  /*
+  try {
+    const response = await fetch("https://script.google.com/macros/s/xxxxx/exec", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: formData.toString()
+    });
+
+    const resultText = await response.text();
+    console.log("📨 GASレスポンス:", resultText);
+
+    if (resultText.trim().toUpperCase() === "OK") {
+      localStorage.removeItem("magokoro_survey_draft");
+      form.style.display = "none";
+      thankYouMessage.style.display = "block";
+    } else {
+      alert("送信に失敗しました: " + resultText);
+    }
+  } catch (error) {
+    console.error("送信エラー:", error);
+    alert("通信エラーが発生しました。もう一度お試しください。");
+  }
+  */
 });
 
 function saveForm() {
