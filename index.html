@@ -155,7 +155,7 @@
 </head>
 <body>
   <form id="magokoroForm"
-    action="https://script.google.com/macros/s/AKfycbyZrehMMmcuOx15sutsAnPnHUtkdMR2oKeI_FhWN9sp3lmli8WeZCBX-d0gq5S7gribwA/exec"
+    action="https://script.google.com/macros/s/AKfycbzZssDekywBPv0jUO2aLJfxPHRWlhJIL1y3k66N1oBZHq8vB7vSQWYphG0rVKGkEVHEcg/exec"
     method="POST">
     <h1>まごころアンケート 2.1</h1>
 
@@ -379,48 +379,51 @@
     }
 
     document.getElementById("magokoroForm").addEventListener("submit", function (e) {
-      // 送信前に文字数チェックを追加
-      const issues = document.querySelectorAll("textarea[name='issue[]']");
-      const requests = document.querySelectorAll("textarea[name='request[]']");
+    // 送信前に文字数チェックを追加
+    const issues = document.querySelectorAll("textarea[name='issue[]']");
+    const requests = document.querySelectorAll("textarea[name='request[]']");
 
-      for (let i = 0; i < issues.length; i++) {
-        if (issues[i].value.length > 5000) {
-          alert(`「問題」欄の入力が5000文字を超えています（${i + 1}番目）。短くしてください。`);
-          issues[i].focus();
-          e.preventDefault();
-          return;
-        }
+    for (let i = 0; i < issues.length; i++) {
+      if (issues[i].value.length > 5000) {
+        alert(`「問題」欄の入力が5000文字を超えています（${i + 1}番目）。短くしてください。`);
+        issues[i].focus();
+        e.preventDefault(); // ← ✨バリデーションエラー時に止める
+        return;
       }
+    }
 
-      for (let i = 0; i < requests.length; i++) {
-        if (requests[i].value.length > 5000) {
-          alert(`「要望」欄の入力が5000文字を超えています（${i + 1}番目）。短くしてください。`);
-          requests[i].focus();
-          e.preventDefault();
-          return;
-        }
+    for (let i = 0; i < requests.length; i++) {
+      if (requests[i].value.length > 5000) {
+        alert(`「要望」欄の入力が5000文字を超えています（${i + 1}番目）。短くしてください。`);
+        requests[i].focus();
+        e.preventDefault(); // ← ✨こちらも同様
+        return;
       }
+    }
 
-      // 通常送信処理
-      const form = e.target;
-      const formData = new FormData(form);
+    // 🔽 🔽 🔽 ← 成功時にここで送信止める（fetchで送信するから）
+    e.preventDefault(); // ← ここで最終的に止めるのが正しい！
 
-      // fetch(form.action, {
-      //   method: 'POST',
-      //   body: formData
-      // })
-      //   .then(response => response.text())
-      //   .then(result => {
-      //     form.reset();
-      //     localStorage.removeItem("magokoro_survey_draft");
-      //     document.getElementById("magokoroForm").style.display = "none";
-      //     document.getElementById("thankyou").style.display = "block";
-      //   })
-      //   .catch(error => {
-      //     alert("送信に失敗しました。時間をおいて再度お試しください。");
-      //     console.error("送信エラー:", error);
-      //   });
-    });
+    const form = e.target;
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.text())
+      .then(result => {
+        form.reset();
+        localStorage.removeItem("magokoro_survey_draft");
+        document.getElementById("magokoroForm").style.display = "none";
+        document.getElementById("thankyou").style.display = "block";
+      })
+      .catch(error => {
+        alert("送信に失敗しました。時間をおいて再度お試しください。");
+        console.error("送信エラー:", error);
+      });
+  });
+
 
     window.addEventListener("DOMContentLoaded", restoreDraft);
   </script>
