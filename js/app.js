@@ -102,57 +102,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // === フォーム送信処理 ===
   form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const userName = userNameInput.value.trim();
-    if (!userName) {
-      alert("お名前を入力してください。");
-      return;
-    }
+  const userName = userNameInput.value.trim();
+  if (!userName) {
+    alert("お名前を入力してください。");
+    return;
+  }
 
-    const data = {
-      storeNumber: storeNumber.value,
-      storeName: storeName.value,
-      userName,
-      items: []
-    };
+  const itemBlocks = document.querySelectorAll(".item-block");
 
-    const itemBlocks = document.querySelectorAll(".item-block");
-    itemBlocks.forEach(block => {
-      const category = block.querySelector("select[name='category']").value.trim();
-      const problem = block.querySelector("textarea[name='problem']").value.trim();
-      const request = block.querySelector("textarea[name='request']").value.trim();
-      if (category || problem || request) {
-        data.items.push({ category, problem, request });
-      }
-    });
+  const formData = new URLSearchParams();
+  formData.append("storeId", storeNumber.value);
+  formData.append("storeName", storeName.value);
+  formData.append("name", userName);
 
-    if (data.items.length === 0) {
-      alert("少なくとも1つの項目を入力してください。");
-      return;
-    }
-
-    try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbx28-xme9cpLpuqowaQ0NlaA6hrBlypaLqbCUaHqHQdtVQEnzOjUkF5l-92lRfRwj2fXw/exec", {
-        method: "POST",
-        body: JSON.stringify(data)
-      });
-
-      const resultText = await response.text();
-      console.log("📨 GASレスポンス:", resultText);
-
-      if (resultText.trim().toUpperCase() === "OK") {
-        localStorage.removeItem("magokoro_survey_draft"); // 成功したら保存データ削除
-        form.style.display = "none";
-        thankYouMessage.style.display = "block";
-      } else {
-        alert("送信に失敗しました: " + resultText);
-      }
-    } catch (error) {
-      console.error("送信エラー:", error);
-      alert("通信エラーが発生しました。もう一度お試しください。");
-    }
+  itemBlocks.forEach(block => {
+    const category = block.querySelector("select[name='category']").value.trim();
+    const issue = block.querySelector("textarea[name='issue']").value.trim();
+    const request = block.querySelector("textarea[name='request']").value.trim();
+    formData.append("category[]", category);
+    formData.append("issue[]", issue);
+    formData.append("request[]", request);
   });
+
+  try {
+    const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbxZJtYUQKbTXP9TkFoR_MVC6KzlhmyEzINVeu6lvSkXuqxhrV-C9bZjLCgbIHaYn8w-pg/exec",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: formData.toString()
+      }
+    );
+
+    const resultText = await response.text();
+    console.log("📨 GASレスポンス:", resultText);
+
+    if (resultText.trim().toUpperCase() === "OK") {
+      localStorage.removeItem("magokoro_survey_draft");
+      form.style.display = "none";
+      thankYouMessage.style.display = "block";
+    } else {
+      alert("送信に失敗しました: " + resultText);
+    }
+  } catch (error) {
+    console.error("送信エラー:", error);
+    alert("通信エラーが発生しました。もう一度お試しください。");
+  }
 });
 
 function saveForm() {
