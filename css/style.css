@@ -144,3 +144,18 @@ button:hover {
 #saveBtn:hover {
   background-color: #fb8c00;
 }
+
+#closedMessage h2 {
+  font-size: 1.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 480px) {
+  #closedMessage h2 {
+    font-size: 1.4rem;     /* モバイル時は小さめに */
+    text-align: center;
+    padding: 0 1rem;
+  }
+}
