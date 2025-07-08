@@ -7,6 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return; // 初期化処理はスキップ
   }
   
+  // === 店舗マップ（43店対応） === ★ここに追加！！
+  const storeMap = {
+    "001": "1番店", "002": "2番店", "003": "3番店", // ...
+    "043": "43番店"
+  };
+
   // === DOM取得 ===
   const storeNumber = document.getElementById("storeNumber");
   const storeName = document.getElementById("storeName");
@@ -18,28 +24,42 @@ document.addEventListener("DOMContentLoaded", () => {
   const saveBtn = document.getElementById("saveBtn");
   const itemTemplate = document.getElementById("item-template");
 
-  // === 店舗データ ===
-  const stores = [
-    { number: "001", name: "本店" },
-    { number: "002", name: "駅前店" },
-    { number: "003", name: "南支店" },
-    { number: "004", name: "北支店" }
-  ];
+  // === 店舗データ（旧） ===
+  // const stores = [
+  //   { number: "001", name: "本店" },
+  //   { number: "002", name: "駅前店" },
+  //   ...
+  // ];
 
-  // === 店番セレクト初期化 ===
+  // === 店舗マップ（43店対応） ===
+  const storeMap = {
+    "001": "神栖店", "002": "鹿嶋店", "003": "波崎店", "004": "東庄店",
+    "005": "成田店", "006": "サンポート店", "007": "酒々井店", "008": "江戸崎店",
+    "009": "竜ケ崎店", "010": "石岡店", "011": "土浦店",
+    "013": "白井店", "015": "千葉店",
+    "017": "知手店", "018": "佐原店", "019": "佐倉店", "020": "牛堀店",
+    "021": "旭店", "023": "横芝店", "024": "阿見店",
+    "025": "東金店", "026": "美野里店", "027": "八街店", "028": "茂原店",
+    "029": "印西店", "030": "土浦北店", "031": "銚子店", "032": "鉾田店",
+    "033": "桜の郷店", "034": "フーデリア店", "035": "八千代店", "036": "学園の森店",
+    "037": "藤代店", "038": "みどりの店", "039": "イキイキ生鮮市場店", "040": "佐倉寺崎店",
+    "041": "オークビレッジ店", "042": "取手戸頭店", "043": "ひたち野牛久店"
+  };
+
+  // === 店番セレクト初期化（storeMap対応） ===
   const populateStoreOptions = () => {
-    stores.forEach(({ number }) => {
+    for (const number in storeMap) {
       const option = document.createElement("option");
       option.value = number;
       option.textContent = number;
       storeNumber.appendChild(option);
-    });
+    }
   };
 
   // === 店番→店名連動 ===
   const syncStoreName = () => {
-    const selected = stores.find(s => s.number === storeNumber.value);
-    storeName.value = selected?.name || "";
+    const selectedNumber = storeNumber.value;
+    storeName.value = storeMap[selectedNumber] || "";
   };
 
   // === 項目ブロック追加 ===
