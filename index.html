@@ -153,16 +153,16 @@
     }
     #closedMessage h2 {
       font-size: 1.8rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      margin-bottom: 1rem;
+      word-break: keep-all;
+      text-align: center;
     }
 
     @media (max-width: 480px) {
       #closedMessage h2 {
-        font-size: 1.4rem;     /* モバイル時は小さめに */
-        text-align: center;
-        padding: 0 1rem;
+        font-size: 1.3rem;  /* スマホ時は少し小さく */
+        line-height: 1.4;
+        white-space: normal;  /* ← nowrapをやめる */
       }
     }
   </style>
@@ -445,6 +445,6 @@
 
     window.addEventListener("DOMContentLoaded", restoreDraft);
   </script>
-  <script src="js/app.js?v=2025070903"></script>
+  <script src="js/app.js?v=2025070904"></script>
 </body>
 </html>
