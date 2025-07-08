@@ -234,8 +234,19 @@
     function addFeedback() {
       const container = document.getElementById('feedback-container');
       const template = container.querySelector('.fieldset').cloneNode(true);
-      template.querySelectorAll('textarea').forEach(t => t.value = '');
-      template.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+
+      // 値をリセット
+      template.querySelectorAll('textarea').forEach((t, i) => {
+        t.value = '';
+        if (i === 0) t.setAttribute('name', 'issue[]');
+        if (i === 1) t.setAttribute('name', 'request[]');
+      });
+
+      template.querySelectorAll('select').forEach(s => {
+        s.selectedIndex = 0;
+        s.setAttribute('name', 'category[]');
+      });
+
       container.appendChild(template);
     }
 
