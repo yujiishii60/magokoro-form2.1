@@ -121,8 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // === 初期化処理 ===
   populateStoreOptions();
-  restoreDraft();
   for (let i = 0; i < 3; i++) addItemBlock();
+  restoreDraft();
 
   storeId.addEventListener("change", syncStoreName);  // ← 修正
   // storeNumber.addEventListener("change", syncStoreName);
