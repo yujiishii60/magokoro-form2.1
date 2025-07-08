@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   // === アンケート締切チェック ===
-  const DEADLINE = new Date("2025-07-8T23:59:59+09:00");
+  const DEADLINE = new Date("2025-07-08T23:59:59+09:00");
   if (new Date() > DEADLINE) {
     document.getElementById("survey-form").style.display = "none";
     document.getElementById("closedMessage").style.display = "block";
