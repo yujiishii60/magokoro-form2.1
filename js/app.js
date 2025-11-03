@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   // === アンケート締切チェック ===
-  const DEADLINE = new Date("2025-07-11T23:59:59+09:00");
+  const DEADLINE = new Date("2025-11-07T23:59:59+09:00");
+
   if (new Date() > DEADLINE) {
     document.getElementById("magokoroForm").style.display = "none";
     document.getElementById("closedMessage").style.display = "block";
